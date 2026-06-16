@@ -4,33 +4,20 @@ import sys
 from os import getenv
 from dotenv import load_dotenv
 
-from aiogram import Bot, Dispatcher, html
+from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
-from aiogram.types import Message
 
-load_dotenv() 
+from bot.hello import router as hello_router
+
+load_dotenv()
 TOKEN = getenv("BOT_TOKEN")
 
 if not TOKEN:
-    raise ValueError("Токен не найден в .env файле")
-
+    raise ValueError("BOT_TOKEN not found in .env")
 
 dp = Dispatcher()
-
-
-@dp.message(CommandStart())
-async def command_start_handler(message: Message) -> None:
-    await message.answer(f"Привет, {html.bold(message.from_user.full_name)}!")
-
-
-@dp.message()
-async def echo_handler(message: Message) -> None:
-    try:
-        await message.send_copy(chat_id=message.chat.id)
-    except TypeError:
-        await message.answer("Не тот формат")
+dp.include_router(hello_router)
 
 
 async def main() -> None:
