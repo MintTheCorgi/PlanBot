@@ -14,4 +14,4 @@ keyboard = InlineKeyboardMarkup(inline_keyboard=[
 @router.callback_query()
 async def button_handler(query: CallbackQuery) -> None:
     await query.answer()
-    await query.edit_message_text(text=f"Вы нажали кнопку: {query.data}")
+    await query.message.edit_text(text=f"Вы нажали кнопку: {query.data}")
