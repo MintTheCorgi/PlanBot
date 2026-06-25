@@ -8,18 +8,16 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
-from bot.hello import router as hello_router
-from bot.buttons import router as buttons_router
+from bot.buttons import start_router
 
 load_dotenv()
-TOKEN = getenv("BOT_TOKEN")
+TOKEN: str | None = getenv("BOT_TOKEN")
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN not found in .env")
 
 dp = Dispatcher()
-dp.include_router(hello_router)
-dp.include_router(buttons_router)
+dp.include_router(start_router)
 
 
 async def main() -> None:

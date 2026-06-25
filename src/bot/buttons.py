@@ -1,17 +1,19 @@
-from aiogram import Router
-from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram import Router, F, html
+from aiogram.types import KeyboardButton, Message, inline_keyboard_markup
+from aiogram.filters import CommandStart
 
-router = Router()
 
-keyboard = InlineKeyboardMarkup(inline_keyboard=[
-    [
-        InlineKeyboardButton(text="Кнопка 1", callback_data="1"),
-        InlineKeyboardButton(text="Кнопка 2", callback_data="2"),
+start_router = Router()
+
+
+@start_router.message(CommandStart())
+async def cmd_start(message: Message) -> None:
+    await message.answer(text="asd", reply_markup=main_kb(message.from_user.id))
+
+async def main_kb(user_telegram_id: int) -> None:
+    kb_list: list[list[KeyboardButton]] = [
+        [KeyboardButton(text="Создать новую доску"), KeyboardButton(text="Создать постоянную доску")],
+        [KeyboardButton(text="Посмотреть активные доски"), KeyboardButton(text="Информация")]
     ]
-])
-
-
-@router.callback_query()
-async def button_handler(query: CallbackQuery) -> None:
-    await query.answer()
-    await query.message.edit_text(text=f"Вы нажали кнопку: {query.data}")
+    keyboard = inline_keyboard_markup(keyboard=kb_list, resize_keyboard=True, one_time_keyboard=False)
+    return keyboard
