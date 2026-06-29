@@ -8,7 +8,7 @@ start_router = Router()
 
 @start_router.message(CommandStart())
 async def cmd_start(message: Message) -> None:
-    await message.answer(text="asd", reply_markup=main_kb(message.from_user.id))
+    await message.answer(text="Здраствуйте, Рад приветсвовать вас! Я интерактивный помощник для вашего расписания. Создайте новую доску для начала работы.", reply_markup=main_kb(message.from_user.id))
 
 
 def main_kb(user_telegram_id: int) -> ReplyKeyboardMarkup:
